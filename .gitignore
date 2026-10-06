@@ -1,8 +1,23 @@
+# dependencies
 node_modules/
-dist/
+
+# build output
 .next/
-.env
-.env.local
-*.log
+out/
+dist/
+
+# tests
 coverage/
+
+# environment: only the example file is committed
+.env
+.env.*
+!.env.example
+
+# local database
+*.db
+*.db-journal
+
+# logs and OS files
+*.log
 .DS_Store

@@ -64,7 +64,7 @@ Left out on purpose:
 
 | Risk | Mitigation |
 |------|------------|
-| The agent builds things the specs do not ask for. | `implement-from-spec` skill, `AGENTS.md`, and a `verify-against-spec` audit after each milestone. |
+| The agent builds things the specs do not ask for. | `spec-driven-implementer` skill, `AGENTS.md`, and a `verify-against-spec` audit after each milestone. |
 | Limited usage on Cursor's free tier. | Small milestones, one fresh chat per milestone, specs referenced by file instead of pasted. |
 | The agent uses outdated setup steps for Next.js or Prisma. | Milestone 0 is only scaffold plus a database round trip. The prompt tells the agent to check current docs. |
 | `create-next-app` may refuse to run in a folder that already has files. | Scaffold in a temporary subfolder and move the result to the root. |
@@ -85,11 +85,11 @@ Left out on purpose:
 
 | Phase | Cursor mode | Skills | Output | Commit |
 |-------|-------------|--------|--------|--------|
-| 0 Setup | Agent | Native `/create-skill`; imported skills installed | Skills available, process log started | `chore: project kit and skills` |
-| 1 Plan | Plan | Imported `brainstorming` | `docs/PLAN.md` v1 | `docs: plan` |
+| 0 Setup | Agent | Native project rules; imported skills installed | Skills available, process log started | `chore: project kit and skills` |
+| 1 Plan | Plan | Native Plan mode | `docs/PLAN.md` v1 | `docs: plan` |
 | 2 Specs | Agent, then Ask | Project `write-spec` | `docs/specs/*` approved | `docs: specs v1` |
-| 3 Build | Agent, one chat per milestone | Project `implement-from-spec`; imported `test-driven-development`, `frontend-design`, `react-best-practices`, `systematic-debugging` | Code and tests | One commit per milestone |
-| 4 Verify | Agent | Project `verify-against-spec`; native `/review`, `/review-security`; imported `web-design-guidelines` | Coverage report, fixes | `fix: ...` |
-| 5 Present | Ask | Native `/cursor-blame`; project `log-process` | `docs/PROCESS_LOG.md` complete | `docs: process log` |
+| 3 Build | Agent, one chat per milestone | Project `spec-driven-implementer`; imported `test-driven-development`, `frontend-design`, `webapp-testing` | Code and tests | One commit per milestone |
+| 4 Verify | Agent | Project `verify-against-spec`; native `/review`; imported `requesting-code-review`, `webapp-testing` | Coverage report, fixes | `fix: ...` |
+| 5 Present | Ask | Native `/canvas` | `docs/PROCESS_LOG.md` complete | `docs: process log` |
 
-The exact prompts for each phase are in `docs/PLAYBOOK.md`.
+Each step's prompt is recorded in `docs/PROCESS_LOG.md`.

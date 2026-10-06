@@ -1,32 +1,38 @@
 ---
-description: Standing instructions for Easy Exchange (spec-first book swap)
+description: Standing instructions for Easy Exchange (spec-first plant swap)
 alwaysApply: true
 ---
 
 # Easy Exchange
 
-Members swap **books** one-for-one. Process is graded: plan → specs → small slices.
+Members swap **plants** one-for-one: cuttings, seedlings, potted plants and seeds. The process is graded: plan → specs → small milestones.
 
 ## Always read before implementing
 
-1. `docs/plan.md` for locked decisions.
-2. The relevant files in `specs/` (requirements, user stories, features, architecture, data model, API, UI, testing).
+1. `docs/PLAN.md` for the decisions and their reasons.
+2. The spec files the work touches, in `docs/specs/`:
+   - `01-overview.md`: terms and scope
+   - `02-requirements.md`: requirements with IDs
+   - `03-features.md`: screens
+   - `04-architecture.md`: stack, folders, data model
+   - `05-behavior.md`: swap lifecycle and acceptance scenarios
+   - `06-milestones.md`: build order
 3. If code and spec disagree, the spec wins. If the spec is wrong, propose the spec change, update the spec, then change the code.
 
 ## Do not invent scope
 
 - Do not add features, fields, pages, or dependencies the specs do not ask for.
-- Build one slice at a time. Show a plan before editing. Do not start the next slice unasked.
+- Build one milestone at a time. Show a plan before editing. Do not start the next milestone unasked.
 - Ask when a requirement is unclear. Do not guess.
 
 ## Tests
 
 - Write the failing test for each acceptance scenario before production code.
-- Name tests with the scenario ID, for example `AC-SWAP-6: owner can decline a pending request`.
+- Name tests with the scenario ID, for example `AC-SWAP-5: owner can decline a pending request`.
 - Never weaken or delete a test to make it pass.
-- After each slice: run tests, review the diff, then commit.
+- After each milestone: run lint, typecheck and tests, review the diff, then commit.
 
-## Stack and style (locked in the plan)
+## Stack and style (decided in the plan, defined in `04-architecture.md`)
 
 - TypeScript strict.
 - Validate every input on the server with Zod.
@@ -35,4 +41,4 @@ Members swap **books** one-for-one. Process is graded: plan → specs → small 
 
 ## Commits
 
-Conventional commits that name the slice and requirement IDs, for example `feat: listing creation (FR-3)`.
+Conventional commits that name the milestone and requirement IDs, for example `feat(M1): swap rules (REQ-NFR-5)`.
