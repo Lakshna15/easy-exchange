@@ -1,5 +1,6 @@
 // Input rules from docs/specs/02-requirements.md, enforced on the server (REQ-NFR-1).
 import { z } from "zod";
+import { PLANT_FORMS, PLANT_TYPES } from "./constants";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -36,6 +37,21 @@ export const loginSchema = z.object({
   password: z.string(),
 });
 export type LoginInput = z.input<typeof loginSchema>;
+
+// REQ-PLANT-1, REQ-PLANT-2, REQ-PLANT-3, REQ-PLANT-9
+export const plantSchema = z.object({
+  commonName: z
+    .string()
+    .trim()
+    .min(1, "Enter the plant's common name.")
+    .max(80, "Use at most 80 characters for the common name."),
+  botanicalName: z.string().trim().max(120, "Use at most 120 characters for the botanical name."),
+  plantType: z.enum(PLANT_TYPES, { error: "Choose a plant type from the list." }),
+  form: z.enum(PLANT_FORMS, { error: "Choose a form from the list." }),
+  description: z.string().trim().max(1000, "Use at most 1000 characters for the description."),
+  healthConfirmed: z.literal(true, { error: "Confirm that the plant shows no visible pests or disease." }),
+});
+export type PlantInput = z.input<typeof plantSchema>;
 
 /** The first message for each field, keyed by field name. */
 export function fieldErrorsOf(error: z.ZodError): Record<string, string> {

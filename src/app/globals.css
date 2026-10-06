@@ -48,3 +48,44 @@ h3 {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* The plant tag: a nursery stake label (docs/DESIGN.md, principle 1). The point carries the city. */
+.plant-tag-edge {
+  filter: drop-shadow(0 0 1px var(--color-stem)) drop-shadow(0 1px 0 var(--color-stem));
+}
+.plant-tag {
+  --tag-point: 2.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 15rem;
+  padding: 1.9rem 1.25rem calc(var(--tag-point) + 1.75rem);
+  background: #fff;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--tag-point)), 50% 100%, 0 calc(100% - var(--tag-point)));
+}
+.plant-tag::before {
+  /* the hole punched near the top of a real tag */
+  content: "";
+  position: absolute;
+  top: 0.7rem;
+  left: 50%;
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-left: -0.275rem;
+  border-radius: 9999px;
+  background: var(--color-paper);
+  box-shadow: inset 0 0 0 1px var(--color-stem);
+}
+.plant-tag-city {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--tag-point) * 0.45);
+  transform: translateX(-50%);
+  max-width: 52%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  color: var(--color-slate);
+}
