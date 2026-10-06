@@ -1,5 +1,6 @@
 // Plant listings service: REQ-PLANT-1 to REQ-PLANT-9, and the plant page (REQ-BROWSE-6, REQ-BROWSE-8).
 import type { PlantForm, PlantStatus, PlantType } from "@/domain/constants";
+import type { BrowseFilters } from "@/domain/browse";
 import { fieldErrorsOf, plantSchema } from "@/domain/validation";
 import { type Db, newId, now, withTransaction } from "@/server/db";
 import { fail, ok, type Result } from "@/server/result";
@@ -135,6 +136,59 @@ export function getPlantDetails(db: Db, plantId: string): Result<PlantDetails> {
     .get(plantId) as PlantDetails | undefined;
   if (!row || row.status === "REMOVED") return fail("NOT_FOUND", NOT_FOUND);
   return ok({ ...row });
+}
+
+/** One entry in the browse list (REQ-BROWSE-1, REQ-BROWSE-7). */
+export type BrowsePlant = Pick<Plant, "id" | "commonName" | "botanicalName" | "plantType" | "form"> & {
+  city: string;
+  isOwn: boolean;
+};
+
+/** REQ-BROWSE-1 to -3: AVAILABLE plants, newest first, narrowed by search text and filters. */
+export function listAvailablePlants(db: Db, filters: BrowseFilters, viewerId?: string): BrowsePlant[] {
+  const where = ["p.status = 'AVAILABLE'"];
+  const args: string[] = [];
+  if (filters.q) {
+    // LIKE ignores case for A–Z in SQLite (REQ-BROWSE-2). % and _ in the text are matched literally.
+    const pattern = `%${filters.q.replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
+    where.push("(p.commonName LIKE ? ESCAPE '\\' OR COALESCE(p.botanicalName, '') LIKE ? ESCAPE '\\')");
+    args.push(pattern, pattern);
+  }
+  if (filters.plantType) {
+    where.push("p.plantType = ?");
+    args.push(filters.plantType);
+  }
+  if (filters.form) {
+    where.push("p.form = ?");
+    args.push(filters.form);
+  }
+  if (filters.city) {
+    where.push("lower(trim(u.city)) = lower(trim(?))"); // REQ-BROWSE-9
+    args.push(filters.city);
+  }
+  const rows = db
+    .prepare(
+      `SELECT p.id, p.ownerId, p.commonName, p.botanicalName, p.plantType, p.form, u.city
+       FROM plants p JOIN users u ON u.id = p.ownerId
+       WHERE ${where.join(" AND ")}
+       ORDER BY ${NEWEST_FIRST}`,
+    )
+    .all(...args) as (Omit<BrowsePlant, "isOwn"> & { ownerId: string })[];
+  return rows.map(({ ownerId, ...plant }) => ({ ...plant, isOwn: ownerId === viewerId }));
+}
+
+/** REQ-BROWSE-9: cities of members with AVAILABLE plants, once each whatever the letter case, alphabetical. */
+export function listCities(db: Db): string[] {
+  const rows = db
+    .prepare(
+      `SELECT MIN(trim(u.city)) AS city
+       FROM users u
+       WHERE EXISTS (SELECT 1 FROM plants p WHERE p.ownerId = u.id AND p.status = 'AVAILABLE')
+       GROUP BY lower(trim(u.city))
+       ORDER BY lower(trim(u.city))`,
+    )
+    .all() as { city: string }[];
+  return rows.map((row) => row.city);
 }
 
 export function countAvailablePlants(db: Db): number {
