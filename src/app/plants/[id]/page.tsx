@@ -7,10 +7,12 @@ import { PLANT_FORM_LABELS, PLANT_TYPE_LABELS } from "@/domain/constants";
 import { getDb } from "@/server/db";
 import { getPlantDetails } from "@/server/plants";
 import { getCurrentUser } from "@/server/session";
+import { getRequestOptions } from "@/server/swaps";
+import { RequestSwapForm } from "./RequestSwapForm";
 
 export const metadata: Metadata = { title: "Plant · Easy Exchange" };
 
-// REQ-BROWSE-6, -7, -8. The request form arrives in M5.
+// REQ-BROWSE-6, -7, -8 and the request form (F4, REQ-SWAP-1, REQ-SWAP-4).
 export default async function PlantPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const result = getPlantDetails(getDb(), id);
@@ -49,6 +51,24 @@ export default async function PlantPage({ params }: { params: Promise<{ id: stri
       <h2 className="mt-10 font-serif text-2xl font-semibold">About this plant</h2>
       <p className="mt-2 max-w-prose whitespace-pre-line">{plant.description ?? "The owner hasn't added a description."}</p>
 
+      {!isOwner && plant.status === "AVAILABLE" && (
+        <section aria-labelledby="request-heading" className="mt-12 max-w-xl border-t border-stem pt-6">
+          <h2 id="request-heading" className="font-serif text-2xl font-semibold">
+            Offer a swap
+          </h2>
+          {!user ? (
+            <p className="mt-3">
+              <Link href={`/login?next=${encodeURIComponent(`/plants/${plant.id}`)}`} className="font-medium text-leaf underline underline-offset-4">
+                Log in to offer a swap
+              </Link>{" "}
+              for this {plant.commonName}.
+            </p>
+          ) : (
+            <OfferArea plantId={plant.id} memberId={user.id} />
+          )}
+        </section>
+      )}
+
       {isOwner && plant.status === "AVAILABLE" && (
         <p className="mt-10">
           <Link href={`/plants/${plant.id}/edit`} className="rounded-md border border-leaf bg-white px-4 py-2 font-medium text-leaf">
@@ -58,4 +78,21 @@ export default async function PlantPage({ params }: { params: Promise<{ id: stri
       )}
     </article>
   );
+}
+
+function OfferArea({ plantId, memberId }: { plantId: string; memberId: string }) {
+  const options = getRequestOptions(getDb(), memberId);
+  if (options.length === 0) {
+    // REQ-SWAP-4: nothing to offer
+    return (
+      <p className="mt-3">
+        You need an available plant of your own to offer in return.{" "}
+        <Link href="/plants/new" className="font-medium text-leaf underline underline-offset-4">
+          List a plant
+        </Link>{" "}
+        and come back.
+      </p>
+    );
+  }
+  return <RequestSwapForm plantId={plantId} options={options} />;
 }

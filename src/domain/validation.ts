@@ -53,6 +53,14 @@ export const plantSchema = z.object({
 });
 export type PlantInput = z.input<typeof plantSchema>;
 
+// REQ-SWAP-1
+export const swapRequestSchema = z.object({
+  requestedPlantId: z.string().min(1, "Choose a plant to request."),
+  offeredPlantId: z.string().min(1, "Choose one of your plants to offer."),
+  message: z.string().trim().max(500, "Use at most 500 characters for the message."),
+});
+export type SwapRequestInput = z.input<typeof swapRequestSchema>;
+
 /** The first message for each field, keyed by field name. */
 export function fieldErrorsOf(error: z.ZodError): Record<string, string> {
   const errors: Record<string, string> = {};

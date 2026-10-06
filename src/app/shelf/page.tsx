@@ -49,7 +49,9 @@ export default async function ShelfPage() {
                   </Link>
                 ) : (
                   <span className="text-sm text-slate">
-                    {plant.status === "RESERVED" ? "Reserved for an accepted swap" : "Swapped"}
+                    {plant.status === "RESERVED"
+                      ? "Locked while its swap is accepted"
+                      : "Handed over in a completed swap"}
                   </span>
                 )
               }
