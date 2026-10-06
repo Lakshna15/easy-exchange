@@ -88,3 +88,12 @@ One entry per step, oldest first. Each entry records which tool did the work, wh
 - Produced: `docs/PLAN.md` v1.
 - Changed or rejected: Lakshna decided three things through a multiple-choice question: list cuttings, seedlings, potted plants and seeds as one listing type with a form; require a city, show it and filter by it; make presentation slides. Claude added a plant-health confirmation (open question 7) and, after the spike, replaced Prisma with `node:sqlite` (open question 8). The city became required; it was optional in v0.
 - Takeaway: A "Decided by" column keeps the human's choices visible next to the AI's recommendations.
+
+## 2026-10-06 — Phase 2: specs v1
+
+- Tool and mode: Claude (claude.ai)
+- Skills: project `write-spec` (followed step by step: read the plan and all specs first, stable IDs, Given/When/Then with named data, no code, finish with its checks)
+- Prompt: Rewrite the six spec files, in order, so they match plan v1. The BOOK IDs may be renamed to PLANT once, because the specs were never approved and no code exists. Keep every other ID.
+- Produced: `docs/specs/01` to `06` v1: 45 requirements, 40 acceptance scenarios, seed data of nine plants, the transition table T1–T7 unchanged.
+- Changed or rejected: The write-spec checks were run as a script: every requirement has a scenario, every scenario cites existing requirements, no duplicate or undefined IDs, no leftover book wording. A read-through audit (the read-only review step) found four gaps a developer would have to ask about, all in `03-features.md`: where a member lands after listing, editing, removing and requesting; what a visitor sees instead of the request form; what a non-owner sees on an edit page. All four fixed, then every spec marked Approved. One wrong citation was caught before the audit: AC-NFR-4 cited REQ-NFR-1 and -2, which it does not prove.
+- Takeaway: Scripting the skill's checks makes "every requirement has a test" verifiable, not a promise.

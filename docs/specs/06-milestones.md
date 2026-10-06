@@ -1,12 +1,12 @@
 # 06 — Milestones
 
-Status: Draft
+Status: Approved
 Last updated: 2026-10-06
 Depends on: all other specs
 
 ## Purpose
 
-The order in which the app is built. Each milestone is one Cursor chat and one commit. A milestone is done only when its "Done when" line is true and its scenarios have passing tests.
+The order in which the app is built. Each milestone is one focused session and one commit. A milestone is done only when its "Done when" line is true and its scenarios have passing tests.
 
 ## Rules for every milestone
 
@@ -14,14 +14,15 @@ The order in which the app is built. Each milestone is one Cursor chat and one c
 - Write tests for the listed scenarios before the code.
 - `npm run lint`, `npm run typecheck` and `npm test` pass before the commit.
 - If the spec turns out to be wrong, change the spec first, in the same commit.
+- Before using a Next.js API, read its page in `node_modules/next/dist/docs/`.
 
 ## M0 — Scaffold
 
 - Scope: REQ-NFR-6, REQ-NFR-7.
-- Scenarios: AC-NFR-4.
-- Build: Next.js app with TypeScript and Tailwind, Prisma with the three tables in `04-architecture.md`, the seed in `05-behavior.md`, Vitest with one passing test, the scripts in `04-architecture.md`, `.env.example`, and a README with setup commands.
-- Notes: `create-next-app` may refuse to run in a folder that already has files. Scaffold in a temporary subfolder and move the result to the root, keeping `docs/`, `.cursor/`, `.agents/`, `AGENTS.md` and this repository's `.gitignore` entries. Check the current Next.js and Prisma setup docs instead of relying on memory. Record installed versions in `04-architecture.md`.
-- Done when: `npm run dev` serves a home page that shows the number of seeded books read from the database.
+- Scenarios: AC-NFR-4 (setup part).
+- Build: Next.js app with TypeScript and Tailwind, Cache Components off, `src/server/db.ts` with the three tables in `04-architecture.md`, the seed in `05-behavior.md`, Vitest with one passing test, the scripts in `04-architecture.md`, `.env.example`, and a README with setup commands.
+- Notes: `create-next-app` may refuse to run in a folder that already has files. Scaffold in a temporary folder and copy the result in, keeping `docs/`, `.cursor/`, `AGENTS.md` and this repository's `.gitignore` entries. Record the installed versions in `04-architecture.md`.
+- Done when: `npm run dev` serves a home page that shows the number of seeded plants read from the database.
 
 ## M1 — Swap rules
 
@@ -34,37 +35,37 @@ The order in which the app is built. Each milestone is one Cursor chat and one c
 
 - Scope: REQ-AUTH-1 to REQ-AUTH-7, REQ-NFR-1.
 - Scenarios: AC-AUTH-1 to AC-AUTH-7.
-- Build: register, login, logout, the session helpers, the shared header, and an empty members-only `/shelf` page to prove protection.
+- Build: register, login, logout, the session helpers, the shared header and the app's visual style, and an empty members-only `/shelf` page to prove protection.
 - Done when: Dana can register, log out, log back in, and a visitor cannot open `/shelf`.
 
-## M3 — Books
+## M3 — Plant listings
 
-- Scope: REQ-BOOK-1 to REQ-BOOK-8.
-- Scenarios: AC-BOOK-1 to AC-BOOK-7.
-- Build: list, edit and remove a book, and the shelf page.
-- Notes: AC-BOOK-5 and AC-BOOK-7 need swaps. Test them at the service level with swap records created directly in the test database.
-- Done when: Alice can list, edit and remove a book, and Ben cannot change Alice's books.
+- Scope: REQ-PLANT-1 to REQ-PLANT-9.
+- Scenarios: AC-PLANT-1 to AC-PLANT-7.
+- Build: list, edit and remove a plant, and the shelf page.
+- Notes: AC-PLANT-5 and AC-PLANT-7 need swaps. Test them at the service level with swap rows created directly in the test database.
+- Done when: Alice can list, edit and remove a plant, and Ben cannot change Alice's plants.
 
 ## M4 — Browse
 
-- Scope: REQ-BROWSE-1 to REQ-BROWSE-8.
-- Scenarios: AC-BROWSE-1 to AC-BROWSE-7.
-- Build: the browse page with search and filters, and the book's page without the request form.
-- Notes: AC-BROWSE-1 and AC-BROWSE-7 need a reserved book. Test them with records created directly in the test database.
-- Done when: a visitor can find *Pride and Prejudice* by searching `austen` and filtering by Romance, and reload the result.
+- Scope: REQ-BROWSE-1 to REQ-BROWSE-9.
+- Scenarios: AC-BROWSE-1 to AC-BROWSE-8.
+- Build: the browse page with search and the three filters, and the plant's page without the request form.
+- Notes: AC-BROWSE-1 and AC-BROWSE-7 need a reserved plant. Test them with rows created directly in the test database.
+- Done when: a visitor can find *Snake plant* by searching `plant` with the filters Houseplant, Potted plant and Raleigh, and reload the result.
 
 ## M5 — Swaps
 
 - Scope: REQ-SWAP-1 to REQ-SWAP-13.
 - Scenarios: AC-SWAP-1 to AC-SWAP-14.
-- Build: the request form on the book's page, the swap service using the M1 rules inside a transaction, and the swaps page.
-- Done when: Alice and Ben can complete a swap of *Emma* for *Dune* in two browser windows, and Chidi's competing request is cancelled on acceptance.
+- Build: the request form on the plant's page, the swap service using the M1 rules inside a transaction, and the swaps page.
+- Done when: Alice and Ben can complete a swap of *Golden pothos* for *Monstera* in two browser windows, and Chidi's competing request is cancelled on acceptance.
 
 ## M6 — Polish and verify
 
 - Scope: REQ-NFR-1 to REQ-NFR-4 across every page.
-- Scenarios: AC-NFR-1, AC-NFR-2.
-- Build: empty and error states, responsive and keyboard fixes, final README.
+- Scenarios: AC-NFR-1, AC-NFR-2, and AC-NFR-4 in full.
+- Build: empty and error states, responsive and keyboard fixes, final README, the verification report in `docs/VERIFICATION.md`.
 - Done when: the `verify-against-spec` report shows no `Missing`, `Fail` or `Differs from spec` rows, and the hand checklist for AC-NFR-1 and AC-NFR-2 is complete.
 
 ## Out of scope

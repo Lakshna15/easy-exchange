@@ -1,6 +1,6 @@
 # 03 — Features
 
-Status: Draft
+Status: Approved
 Last updated: 2026-10-06
 Depends on: `01-overview.md`, `02-requirements.md`
 
@@ -12,51 +12,53 @@ Describes the app as the user meets it: the features, the screens, and what is o
 
 | Route | Who | Purpose |
 |-------|-----|---------|
-| `/` | Anyone | Browse, search and filter available books. |
-| `/books/[id]` | Anyone | One book. Members who do not own it get the request form. |
-| `/books/new` | Member | List a book. |
-| `/books/[id]/edit` | Owner | Edit or remove a book. |
-| `/shelf` | Member | The member's own books. |
+| `/` | Anyone | Browse, search and filter available plants. |
+| `/plants/[id]` | Anyone | One plant. Members who do not own it get the request form. |
+| `/plants/new` | Member | List a plant. |
+| `/plants/[id]/edit` | Owner | Edit or remove a plant. |
+| `/shelf` | Member | The member's own plants. |
 | `/swaps` | Member | Incoming and outgoing swaps with their actions. |
 | `/register` | Visitor | Create an account. |
 | `/login` | Visitor | Log in. |
 
-Every page has the same header. Signed out, it shows the app name (a link to `/`), Log in and Register. Signed in, it shows the app name, Shelf, Swaps, List a book, the member's display name and Log out.
+Every page has the same header. Signed out, it shows the app name (a link to `/`), Log in and Register. Signed in, it shows the app name, Shelf, Swaps, List a plant, the member's display name and Log out.
 
 ## F1 — Accounts
 
-As a visitor, I want an account so that I can list books and swap.
+As a visitor, I want an account so that I can list plants and swap.
 
-- Register form: display name, email, city (optional), password.
+- Register form: display name, email, city, password.
 - Login form: email, password.
 - After registering, the member lands on `/shelf`. After logging in, the member lands on the page they came from, or on `/`.
 - Covers REQ-AUTH-1 to REQ-AUTH-7.
 
 ## F2 — Shelf and listings
 
-As a member, I want to list the books I am willing to give away so that others can request them.
+As a member, I want to list the plants I am willing to give away so that others can request them.
 
-- `/shelf` lists the member's books as cards with a status badge. `AVAILABLE` books have an Edit link. An empty shelf explains what a listing is and links to `/books/new`.
-- The list-a-book form has title, author, genre (select), condition (select) and description (text area).
-- The edit page shows the same form filled in, plus a Remove button that asks for confirmation.
-- A book that cannot be edited or removed shows the reason instead of the control.
-- Covers REQ-BOOK-1 to REQ-BOOK-8.
+- `/shelf` lists the member's plants as cards with a status badge. `AVAILABLE` plants have an Edit link. An empty shelf explains what a listing is and links to `/plants/new`.
+- The list-a-plant form has common name, botanical name, plant type (select), form (select), description (text area), and a required checkbox "No visible pests or disease".
+- The edit page shows the same form filled in, with the checkbox unticked so the owner confirms the plant's health again, plus a Remove button that asks for confirmation.
+- After listing or editing, the member lands on the plant's page. After removing, the member lands on `/shelf`.
+- A plant that cannot be edited or removed shows the reason instead of the control. A member who opens the edit page of someone else's plant sees that only the owner can edit it.
+- Covers REQ-PLANT-1 to REQ-PLANT-9.
 
 ## F3 — Browse
 
-As anyone, I want to find a book worth swapping for.
+As anyone, I want to find a plant worth swapping for, close to where I live.
 
-- `/` shows a search box, a genre select, a condition select and a grid of book cards.
-- A card shows title, author, genre and condition, and links to the book's page. The member's own books carry a "Your book" badge.
-- The book's page shows the full description and the owner's display name and city.
-- Covers REQ-BROWSE-1 to REQ-BROWSE-8.
+- `/` shows a search box, a plant type select, a form select, a city select and a grid of plant cards.
+- A card shows the common name, the botanical name in italics if there is one, the plant type, the form and the city, and links to the plant's page. The member's own plants carry a "Your plant" badge.
+- The plant's page shows the full description, the date it was listed, and the owner's display name and city.
+- Covers REQ-BROWSE-1 to REQ-BROWSE-9.
 
 ## F4 — Swaps
 
-As a member, I want to offer one of my books for one I want, and to answer the offers I receive.
+As a member, I want to offer one of my plants for one I want, and to answer the offers I receive.
 
-- On another member's available book, the request form lets the member pick one of their own available books and add a message.
-- `/swaps` has two sections, Incoming and Outgoing. Each swap shows "their book for your book" in words, the other member's name, the message and a status badge.
+- On another member's available plant, the request form lets the member pick one of their own available plants and add a message. After a successful request, the member lands on `/swaps`.
+- A visitor on an available plant's page sees a link to log in in place of the request form. Logging in returns them to the plant's page.
+- `/swaps` has two sections, Incoming and Outgoing. Each swap shows "their plant for your plant" in words, the other member's name, the message and a status badge.
 - Actions shown per swap:
 
   | Status | Owner sees | Requester sees |
