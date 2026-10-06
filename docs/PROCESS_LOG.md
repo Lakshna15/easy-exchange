@@ -106,3 +106,12 @@ One entry per step, oldest first. Each entry records which tool did the work, wh
 - Produced: Next.js 16.4 app (Cache Components off), `src/server/db.ts` (schema with `CHECK` constraints generated from `src/domain/constants.ts`), `src/server/seed.ts` and `scripts/seed.ts`, 4 tests for AC-NFR-4, README setup for Windows and macOS/Linux, installed versions recorded in `04-architecture.md`.
 - Changed or rejected: The tests were written first and failed because the modules did not exist. Two problems were found and fixed: the seed script crashed under `tsx` (top-level `await` in a CommonJS file), and Vitest warned about an ESM config file loaded as CommonJS (renamed to `vitest.config.mts`). Next.js's own agent-rules block was added to `AGENTS.md`, because `next dev` writes it there anyway. The architecture spec was updated in the same commit: the seed data lives in `src/server/seed.ts` so tests can use it.
 - Takeaway: The "Done when" line gave a check anyone can repeat: the home page reads "9 plants are waiting for a new home" from the database.
+
+## 2026-10-06 — Phase 3, M1: swap rules
+
+- Tool and mode: Claude (claude.ai)
+- Skills: project `spec-driven-implementer`; imported `test-driven-development`
+- Prompt: Build milestone M1: the pure swap transition function and tests for T1 to T7, written as one table-driven test before the function exists.
+- Produced: `src/domain/swaps.ts` (`decideSwapAction`, `allowedSwapActions`) and `tests/domain/swaps.test.ts`: all 60 status × action × role combinations, written out by hand from the table in `05-behavior.md`, plus checks that the cases cover all 60 and that the module imports nothing outside `src/domain`. 77 new tests.
+- Changed or rejected: The tests failed first because the module did not exist. The expected results were written as literal tables rather than computed, so the tests cannot share a bug with the code.
+- Takeaway: Writing the refusal reasons (FORBIDDEN or CONFLICT) as a fixed order in the spec made every one of the 53 refusal cases decidable without asking.
