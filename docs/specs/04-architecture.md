@@ -22,18 +22,20 @@ Defines how the app is built: the stack, the folders, the data model and the con
 | Tests | Vitest |
 | Lint | ESLint with `eslint-config-next` |
 
-Use the current stable release of each. Milestone 0 records the installed versions here:
+Use the current stable release of each. Versions installed at milestone 0 (2026-10-06):
 
 | Package | Version |
 |---------|---------|
-| next | recorded at M0 |
-| react | recorded at M0 |
-| typescript | recorded at M0 |
-| tailwindcss | recorded at M0 |
-| zod | recorded at M0 |
-| bcryptjs | recorded at M0 |
-| jose | recorded at M0 |
-| vitest | recorded at M0 |
+| next | 16.4.0 |
+| react | 19.3.0 |
+| typescript | 5.9.3 (`create-next-app` pins 5.x) |
+| tailwindcss | 4.3.3 |
+| zod | 4.6.5 |
+| bcryptjs | 3.0.3 |
+| jose | 6.2.12 |
+| vitest | 5.0.3 |
+| eslint | 9.39.5 |
+| tsx | 4.23.15 (runs the seed script) |
 
 The app runs as one process on one machine. There is no separate API server.
 
@@ -48,7 +50,8 @@ src/
   domain/       Pure rules: swap transitions, validation schemas, constants. No I/O.
   server/       Database, session, and one service file per area: auth, plants, swaps.
 scripts/
-  seed.ts       Creates the example data from 05-behavior.md.
+  seed.ts       Command line for db:seed and db:reset. The data itself is in src/server/seed.ts,
+                so tests can seed an in-memory database.
 tests/          Tests for domain and server.
 docs/           Plan, specs, process log, verification report.
 ```

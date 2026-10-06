@@ -1,10 +1,15 @@
 # dependencies
 node_modules/
+/.pnp
+.pnp.*
 
 # build output
 .next/
 out/
 dist/
+/build
+*.tsbuildinfo
+next-env.d.ts
 
 # tests
 coverage/
@@ -15,9 +20,13 @@ coverage/
 !.env.example
 
 # local database
+data/
 *.db
 *.db-journal
 
-# logs and OS files
+# logs, keys and OS files
 *.log
+npm-debug.log*
+*.pem
 .DS_Store
+.vercel

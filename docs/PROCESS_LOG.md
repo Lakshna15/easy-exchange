@@ -97,3 +97,12 @@ One entry per step, oldest first. Each entry records which tool did the work, wh
 - Produced: `docs/specs/01` to `06` v1: 45 requirements, 40 acceptance scenarios, seed data of nine plants, the transition table T1–T7 unchanged.
 - Changed or rejected: The write-spec checks were run as a script: every requirement has a scenario, every scenario cites existing requirements, no duplicate or undefined IDs, no leftover book wording. A read-through audit (the read-only review step) found four gaps a developer would have to ask about, all in `03-features.md`: where a member lands after listing, editing, removing and requesting; what a visitor sees instead of the request form; what a non-owner sees on an edit page. All four fixed, then every spec marked Approved. One wrong citation was caught before the audit: AC-NFR-4 cited REQ-NFR-1 and -2, which it does not prove.
 - Takeaway: Scripting the skill's checks makes "every requirement has a test" verifiable, not a promise.
+
+## 2026-10-06 — Phase 3, M0: scaffold
+
+- Tool and mode: Claude (claude.ai)
+- Skills: project `spec-driven-implementer`; imported `test-driven-development`
+- Prompt: Build milestone M0 and nothing else: Next.js with TypeScript and Tailwind, the three tables, the seed, Vitest, the scripts, `.env.example` and a README. Scaffold in a temporary folder and copy in.
+- Produced: Next.js 16.4 app (Cache Components off), `src/server/db.ts` (schema with `CHECK` constraints generated from `src/domain/constants.ts`), `src/server/seed.ts` and `scripts/seed.ts`, 4 tests for AC-NFR-4, README setup for Windows and macOS/Linux, installed versions recorded in `04-architecture.md`.
+- Changed or rejected: The tests were written first and failed because the modules did not exist. Two problems were found and fixed: the seed script crashed under `tsx` (top-level `await` in a CommonJS file), and Vitest warned about an ESM config file loaded as CommonJS (renamed to `vitest.config.mts`). Next.js's own agent-rules block was added to `AGENTS.md`, because `next dev` writes it there anyway. The architecture spec was updated in the same commit: the seed data lives in `src/server/seed.ts` so tests can use it.
+- Takeaway: The "Done when" line gave a check anyone can repeat: the home page reads "9 plants are waiting for a new home" from the database.
