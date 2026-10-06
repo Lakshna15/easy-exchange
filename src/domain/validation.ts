@@ -27,7 +27,12 @@ export const registerSchema = z.object({
   password: z
     .string()
     .min(8, "Use a password of 8 to 72 characters.")
-    .max(72, "Use a password of 8 to 72 characters."),
+    .max(72, "Use a password of 8 to 72 characters.")
+    // bcrypt ignores everything after 72 bytes, and letters like é take two (REQ-AUTH-1, changed in M6).
+    .refine(
+      (password) => new TextEncoder().encode(password).length <= 72,
+      "Use a shorter password. Letters like é and symbols take more room, and the limit is 72 bytes.",
+    ),
 });
 export type RegisterInput = z.input<typeof registerSchema>;
 

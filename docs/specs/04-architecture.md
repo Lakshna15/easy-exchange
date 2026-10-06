@@ -170,7 +170,7 @@ Expected failures are returned, not thrown. Unexpected errors are thrown and sho
 |-------|------|--------|
 | Domain | Vitest | Every row of the transition table, validation schemas. |
 | Services | Vitest against a fresh in-memory SQLite database per test | Scenarios in `05-behavior.md` that read or write data. |
-| Pages | Hand checklist and a scripted browser run in milestone 6 | Layout, keyboard use, full flows in the browser. The browser run uses Playwright from outside the project; it is not a project dependency. |
+| Pages | Scripted browser checks in `e2e/` (Python Playwright, headless Chromium), run with `bash e2e/run-all.sh` | Redirects, forms keeping their input, what each page shows, swaps between members in separate sessions, 360 px layouts and keyboard-only use. Playwright is not a project dependency, and the checks are not part of `npm test`. |
 
 A test that proves a scenario starts its name with the scenario ID, for example `AC-SWAP-6: accepting reserves both plants`.
 

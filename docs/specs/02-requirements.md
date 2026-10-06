@@ -12,7 +12,7 @@ The complete list of what the app must do. Each requirement is one testable beha
 
 | ID | Requirement |
 |----|-------------|
-| REQ-AUTH-1 | A visitor can register with a display name (2–40 characters), an email address, a city (1–60 characters) and a password (8–72 characters). |
+| REQ-AUTH-1 | A visitor can register with a display name (2–40 characters), an email address, a city (1–60 characters) and a password (8–72 characters, and at most 72 bytes in UTF-8, because the password hash ignores anything after 72 bytes). |
 | REQ-AUTH-2 | Email addresses are unique. They are trimmed and compared without regard to letter case. |
 | REQ-AUTH-3 | Passwords are stored only as salted hashes. A password or hash never appears in a response, a page or a log. |
 | REQ-AUTH-4 | A member can log in with email and password and can log out. A session lasts 7 days and survives a page reload. |
@@ -91,3 +91,7 @@ None. The answers settled during planning (`docs/PLAN.md` section 6) are written
 - `REQ-BOOK-1` to `REQ-BOOK-8` became `REQ-PLANT-1` to `REQ-PLANT-8`. This is a one-time rename, allowed because the v0 specs were never approved and no code existed. From approval on, IDs are frozen.
 - New: REQ-PLANT-9 (health confirmation), REQ-BROWSE-9 (city filter).
 - Changed: REQ-AUTH-1 (city required), REQ-AUTH-7 (city stored trimmed and shown on plants; was "optional city"), REQ-BROWSE-1, -2, -3, -6 (plant fields; filters are plant type, form and city), REQ-NFR-6 (nine plants).
+
+## Changes after approval
+
+- 2026-10-06, milestone 6 code review: REQ-AUTH-1 also limits the password to 72 bytes. bcrypt ignores everything after 72 bytes, so a 40-character password of accented letters (80 bytes) matched a different password with the same first 72 bytes.

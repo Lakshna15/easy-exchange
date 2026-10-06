@@ -31,6 +31,7 @@ describe("Accounts", () => {
       [{ city: "C".repeat(61) }, "city"],
       [{ password: "p".repeat(7) }, "password"],
       [{ password: "p".repeat(73) }, "password"],
+      [{ password: "é".repeat(40) }, "password"], // 40 characters but 80 bytes: bcrypt would ignore the end
       [{ email: "not-an-email" }, "email"],
     ] as const;
     for (const [change, field] of cases) {

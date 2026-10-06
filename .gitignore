@@ -30,3 +30,7 @@ npm-debug.log*
 *.pem
 .DS_Store
 .vercel
+
+# browser check screenshots
+e2e/screenshots/
+__pycache__/

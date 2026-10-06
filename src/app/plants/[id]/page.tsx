@@ -10,7 +10,11 @@ import { getCurrentUser } from "@/server/session";
 import { getRequestOptions } from "@/server/swaps";
 import { RequestSwapForm } from "./RequestSwapForm";
 
-export const metadata: Metadata = { title: "Plant · Easy Exchange" };
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const result = getPlantDetails(getDb(), id);
+  return { title: `${result.ok ? result.data.commonName : "Plant not found"} · Easy Exchange` };
+}
 
 // REQ-BROWSE-6, -7, -8 and the request form (F4, REQ-SWAP-1, REQ-SWAP-4).
 export default async function PlantPage({ params }: { params: Promise<{ id: string }> }) {
