@@ -41,6 +41,17 @@ export const SEED_MEMBERS: SeedMember[] = [
   },
 ];
 
+/**
+ * Empties every table in place, then seeds again. The file is kept, so a running app keeps a valid handle
+ * (deleting the file under a running app makes SQLite refuse its writes).
+ */
+export async function resetDatabase(db: Db): Promise<void> {
+  withTransaction(db, () => {
+    db.exec("DELETE FROM swaps; DELETE FROM plants; DELETE FROM users;");
+  });
+  await seedDatabase(db);
+}
+
 /** Creates the three demo members and their nine plants, oldest (Golden pothos) to newest (Sunflower). */
 export async function seedDatabase(db: Db): Promise<void> {
   const existing = db.prepare("SELECT COUNT(*) AS n FROM users").get() as { n: number };

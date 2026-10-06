@@ -7,6 +7,7 @@ export default defineConfig({
   },
   test: {
     environment: "node",
+    env: { SESSION_SECRET: "test-only-secret-that-is-at-least-32-characters-long" },
     include: ["tests/**/*.test.ts"],
   },
 });

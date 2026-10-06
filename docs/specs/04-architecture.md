@@ -121,7 +121,7 @@ These hold after every completed action:
 
 ## Database access
 
-- `src/server/db.ts` opens the SQLite file named by `DATABASE_FILE` (default `data/easy-exchange.db`, creating the folder if needed), switches on foreign keys, and creates the tables if they are missing. There is no migration tool: `npm run db:reset` deletes the local database and seeds it again.
+- `src/server/db.ts` opens the SQLite file named by `DATABASE_FILE` (default `data/easy-exchange.db`, creating the folder if needed), switches on foreign keys, and creates the tables if they are missing. There is no migration tool: `npm run db:reset` empties the local database and seeds it again. It keeps the file, so it is safe to run while the app is running. (Deleting the file under a running app leaves the app holding a stale handle that SQLite refuses to write to; this was found by the M2 browser check.)
 - If `node:sqlite` cannot be loaded, the app stops with a message naming the Node.js version it needs.
 - Every service function takes the database handle as its first argument, so tests can pass a fresh in-memory database.
 - Multi-step changes run inside `BEGIN IMMEDIATE … COMMIT` through one helper that rolls back on any error.

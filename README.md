@@ -45,7 +45,7 @@ Open <http://localhost:3000>. The demo members are `alice@example.com`, `ben@exa
 | `npm test` | Runs the tests. Each test name starts with the scenario it proves, for example `AC-SWAP-6`. |
 | `npm run lint` / `npm run typecheck` | ESLint and the TypeScript check. |
 | `npm run db:seed` | Creates the demo data in an empty database. |
-| `npm run db:reset` | Deletes the local database and creates the demo data again. |
+| `npm run db:reset` | Empties the local database and creates the demo data again. Safe while the app is running. |
 
 ## Where things are
 

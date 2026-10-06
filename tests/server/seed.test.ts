@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import bcrypt from "bcryptjs";
 import { describe, expect, it } from "vitest";
 import { openDatabase } from "@/server/db";
-import { SEED_PASSWORD, seedDatabase } from "@/server/seed";
+import { SEED_PASSWORD, resetDatabase, seedDatabase } from "@/server/seed";
 
 describe("AC-NFR-4: fresh setup", () => {
   it("AC-NFR-4: the seed creates three members and nine available plants", async () => {
@@ -47,6 +47,18 @@ describe("AC-NFR-4: fresh setup", () => {
     await seedDatabase(db);
     await expect(seedDatabase(db)).rejects.toThrow(/already has data/);
     expect(db.prepare("SELECT COUNT(*) AS n FROM plants").get()).toEqual({ n: 9 });
+  });
+
+  it("AC-NFR-4: resetting empties the database in place and seeds it again", async () => {
+    const db = openDatabase(":memory:");
+    await seedDatabase(db);
+    db.prepare("UPDATE plants SET status = 'REMOVED' WHERE commonName = 'Basil'").run();
+    db.prepare(
+      "INSERT INTO users (id, email, displayName, city, passwordHash, createdAt) VALUES ('x', 'x@example.com', 'X', 'Y', 'h', '2026-01-01')",
+    ).run();
+    await resetDatabase(db);
+    expect(db.prepare("SELECT COUNT(*) AS n FROM users").get()).toEqual({ n: 3 });
+    expect(db.prepare("SELECT COUNT(*) AS n FROM plants WHERE status = 'AVAILABLE'").get()).toEqual({ n: 9 });
   });
 
   it("AC-NFR-4: .env.example lists every variable and .env is never committed", () => {
