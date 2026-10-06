@@ -70,3 +70,21 @@ One entry per step, oldest first. Each entry records which tool did the work, wh
 - Produced: One `README.md`, `AGENTS.md` and `.gitignore` (merged from the `.local` copies). Every reference now points to `docs/PLAN.md` and `docs/specs/01` to `06`. `implement-from-spec` was folded into `spec-driven-implementer` and deleted. `docs/prompt-log.md` was merged into this file and deleted. `docs/PLAYBOOK.md` was deleted; commit `f23c3e9` keeps it in history. `docs/workspace-setup.md` lists only skills that exist.
 - Changed or rejected: The `log-process` skill, planned for Cursor's native `/create-skill`, was not created because Cursor's usage had run out. This log is kept by hand instead.
 - Takeaway: Fixing the references before planning means every later prompt can point the agent at files that exist.
+
+## 2026-10-06 — Spike: check the stack before planning
+
+- Tool and mode: Claude (claude.ai), in a throwaway folder outside the repository
+- Skills: none
+- Prompt: Before the plan commits to a stack, prove that the planned pieces install and run in the build environment.
+- Produced: Findings only, no repository files. Prisma's engine download is blocked (HTTP 403), so Prisma could not run its tests here. Next.js 16.4 with Node's built-in `node:sqlite` passed `next build`, `next start` (data kept between requests, cookies read), `next dev`, and a Vitest transaction test. Google Fonts cannot be fetched at build time. `create-next-app` 16.4 turns on Cache Components and tells agents to read its bundled docs before writing code.
+- Changed or rejected: Prisma dropped in favor of `node:sqlite`. Cache Components turned off. Fonts to come from npm. All three are recorded in plan v1 with reasons.
+- Takeaway: A short spike before the plan avoided a plan that could not be built.
+
+## 2026-10-06 — Phase 1: plan v1 for the plant exchange
+
+- Tool and mode: Claude (claude.ai). Cursor's Plan mode was the intended tool; its usage had run out.
+- Skills: none. Each decision is written with its strongest counter-argument, as the v0 playbook asked of the planning step.
+- Prompt: Rewrite plan v0 (books) as plan v1 for a plant exchange, using Lakshna's decisions, and settle every open question with a reason.
+- Produced: `docs/PLAN.md` v1.
+- Changed or rejected: Lakshna decided three things through a multiple-choice question: list cuttings, seedlings, potted plants and seeds as one listing type with a form; require a city, show it and filter by it; make presentation slides. Claude added a plant-health confirmation (open question 7) and, after the spike, replaced Prisma with `node:sqlite` (open question 8). The city became required; it was optional in v0.
+- Takeaway: A "Decided by" column keeps the human's choices visible next to the AI's recommendations.
