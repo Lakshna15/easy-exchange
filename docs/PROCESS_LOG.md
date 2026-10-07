@@ -22,7 +22,7 @@ One entry per step, oldest first. Each entry records which tool did the work, wh
 - Tool and mode: Cursor Agent
 - Skills: none
 - Prompt: Sign in to GitHub, pick an exchange type, create the public repository `easy-exchange`, take an empty-repository screenshot, make the first commit.
-- Produced: `2aa3c28` `docs: add project README for book exchange`, pushed to `main` at https://github.com/Lakshna15/easy-exchange. GitHub showed "This repository is empty." before the push.
+- Produced: `2aa3c28` `docs: add project README for book exchange`, pushed to `main` at https://github.com/Lakshna15/easy-exchange. GitHub showed "This repository is empty." before the push. This commit is no longer in `main`'s history: GitHub's activity log shows the Phase 2 push moving `main` from `2aa3c28` to `d2d6b03`, a new first commit.
 - Changed or rejected: The agent could not click Cursor's Accounts icon. `gh auth status` already showed `Lakshna15` signed in to github.com, so it used that. The remote already existed, so no second repository was created. Lakshna confirmed books, one-for-one, a first commit and a push.
 - Takeaway: Check what already exists (sign-in, remote) before creating anything.
 
@@ -160,3 +160,12 @@ One entry per step, oldest first. Each entry records which tool did the work, wh
 - Produced: `src/app/error.tsx`; the "hand checklist" for AC-NFR-1 and -2 turned into browser checks (all eight screens at 360 px, a visible label on every field, a keyboard-only register → list → request → accept run checking visible focus at every Tab stop); the browser checks moved into `e2e/` with `run-all.sh`; README sections for a two-window demo and troubleshooting; `docs/VERIFICATION.md` (45/45 requirements and 40/40 scenarios Pass, each with `file:line` and test evidence, generated from the real test output); `docs/REVIEW.md`. A fresh clone that followed only the README passed in production mode.
 - Changed or rejected: (1) Read the Next.js 16.4 docs first: the error page's prop is now `retry`, not `reset` as in older versions. (2) The code review found a real security edge: bcrypt ignores everything after 72 bytes, so a 40-character password of accented letters matched a different password with the same first 72 bytes. This was confirmed with a script, then fixed spec first (REQ-AUTH-1, "Changes after approval"), then with a test, then in code. (3) The review skill asks for a separate reviewer subagent; none was started, because separate agents run only when Lakshna asks for them. The review is therefore marked as a self-review, and an independent pass is listed as the top gap. (4) The browser-check runner left a server running between runs, so a second run tested the wrong database (18 of 33 passed). The runner now stops the whole process group and refuses to start on a busy port; two runs in a row then passed 33/33.
 - Takeaway: Turning the hand checklist into scripts made accessibility checks repeatable instead of a one-time promise.
+
+## 2026-10-06 — Phase 5: presentation slides
+
+- Tool and mode: Claude (claude.ai), with the Slides artifact type
+- Skills: none from this repository. The deck reuses the app's colours and fonts from `docs/DESIGN.md`.
+- Prompt: Make the class presentation, focused on how the app was built rather than what it does. Every fact on a slide must come from a file in this repository, and each content slide names its source.
+- Produced: A 16-slide deck with speaker notes, kept outside the repository as a private Slides artifact that Lakshna shares. It covers the brief, the path from plan to commits, the switch from Cursor to Claude, the skills, one prompt, the plan, the spike, the specs, the build, one requirement traced end to end, the design, what went wrong, verification, a demo and lessons.
+- Changed or rejected: Checking the slides against `git log` showed that `2aa3c28` from Phase 1 is no longer in `main`'s history; the Phase 1 entry now says so. The skills slide lists the native skills that were planned but not used (Plan and Ask modes, `/create-skill`, `/review`, `/canvas`) instead of claiming them.
+- Takeaway: Naming a source file on every slide made each claim checkable, and checking them found one line in this log that `git log` no longer confirmed.
