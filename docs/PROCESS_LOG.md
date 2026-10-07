@@ -161,7 +161,7 @@ One entry per step, oldest first. Each entry records which tool did the work, wh
 - Changed or rejected: (1) Read the Next.js 16.4 docs first: the error page's prop is now `retry`, not `reset` as in older versions. (2) The code review found a real security edge: bcrypt ignores everything after 72 bytes, so a 40-character password of accented letters matched a different password with the same first 72 bytes. This was confirmed with a script, then fixed spec first (REQ-AUTH-1, "Changes after approval"), then with a test, then in code. (3) The review skill asks for a separate reviewer subagent; none was started, because separate agents run only when Lakshna asks for them. The review is therefore marked as a self-review, and an independent pass is listed as the top gap. (4) The browser-check runner left a server running between runs, so a second run tested the wrong database (18 of 33 passed). The runner now stops the whole process group and refuses to start on a busy port; two runs in a row then passed 33/33.
 - Takeaway: Turning the hand checklist into scripts made accessibility checks repeatable instead of a one-time promise.
 
-## 2026-10-06 — Phase 5: presentation slides
+## 2026-10-07 — Phase 5: presentation slides
 
 - Tool and mode: Claude (claude.ai), with the Slides artifact type
 - Skills: none from this repository. The deck reuses the app's colours and fonts from `docs/DESIGN.md`.
